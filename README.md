@@ -1,10 +1,10 @@
-# Heimspielplaner V45.3
+# Heimspielplaner V45.6
 
-Alle vier Dateien in das Stammverzeichnis des GitHub-Repositorys hochladen und vorhandene Dateien ersetzen:
+Die WhatsApp-Heimspielausgabe entspricht exakt dem aktiven Kachelfilter:
 
-- index.html
-- manifest.webmanifest
-- version.json
-- README.md
+- Heimspiele: alle Spiele im gewählten Zeitraum
+- Kollisionen: nur Kollisionsspiele
+- Geändert: nur manuell geänderte Spiele
+- SGV: nur SGV-Heimspiele
 
-V45.3 korrigiert die iPhone-Darstellung der Datums-, Zeit- und Auswahlfelder. Alle Felder in „Freie Slots“ haben dieselben Abmessungen. Die Datumsfelder in „Heimspiele“ sind kompakter und auf 80 Prozent Breite zentriert.
+Wird Kollisionen, Geändert oder SGV erneut angetippt, wird der Filter aufgehoben. Bildschirm und WhatsApp-Ausgabe zeigen dann wieder alle Spiele im gewählten Zeitraum.
