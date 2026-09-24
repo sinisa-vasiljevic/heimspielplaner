@@ -1,10 +1,24 @@
-# Heimspielplaner V45.6
+# Heimspielplaner V45.7 Offline
 
-Die WhatsApp-Heimspielausgabe entspricht exakt dem aktiven Kachelfilter:
+## Offline-Funktion
+- Der letzte erfolgreich online geladene FuPa-Stand wird automatisch im Browser gespeichert.
+- Ohne Internet wird dieser letzte Stand automatisch angezeigt.
+- Sobald das Gerät wieder online ist, versucht die App automatisch eine Aktualisierung.
+- Erst wenn neue FuPa-Daten erfolgreich erkannt wurden, ersetzt die App den alten gespeicherten Stand.
+- Schlägt der Abruf fehl, bleibt der letzte funktionierende Stand erhalten.
+- Manuelle Änderungen, Einstellungen, Importdaten, Kabinen- und Verkaufsplanung bleiben getrennt erhalten.
 
-- Heimspiele: alle Spiele im gewählten Zeitraum
-- Kollisionen: nur Kollisionsspiele
-- Geändert: nur manuell geänderte Spiele
-- SGV: nur SGV-Heimspiele
+## Anzeige
+- Grün: Online
+- Rot: Offline
+- Unter dem FuPa-Status steht der Zeitpunkt des letzten erfolgreichen Stands.
 
-Wird Kollisionen, Geändert oder SGV erneut angetippt, wird der Filter aufgehoben. Bildschirm und WhatsApp-Ausgabe zeigen dann wieder alle Spiele im gewählten Zeitraum.
+## GitHub
+Alle Dateien dieses Pakets gemeinsam in denselben GitHub-Pages-Ordner hochladen und vorhandene Dateien ersetzen. Die App anschließend einmal vollständig online öffnen.
+
+## Offline-Test
+1. App online öffnen und warten, bis FuPa-Heimspiele geladen angezeigt werden.
+2. App zum Home-Bildschirm hinzufügen.
+3. Flugmodus aktivieren.
+4. App vollständig schließen und neu starten.
+5. Der letzte gespeicherte Stand muss mit rotem Offline-Status angezeigt werden.
