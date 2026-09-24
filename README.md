@@ -1,24 +1,19 @@
-# Heimspielplaner V45.7 Offline
+## Heimspielplaner V45.9 Offline
 
-## Offline-Funktion
-- Der letzte erfolgreich online geladene FuPa-Stand wird automatisch im Browser gespeichert.
-- Ohne Internet wird dieser letzte Stand automatisch angezeigt.
-- Sobald das Gerät wieder online ist, versucht die App automatisch eine Aktualisierung.
-- Erst wenn neue FuPa-Daten erfolgreich erkannt wurden, ersetzt die App den alten gespeicherten Stand.
-- Schlägt der Abruf fehl, bleibt der letzte funktionierende Stand erhalten.
-- Manuelle Änderungen, Einstellungen, Importdaten, Kabinen- und Verkaufsplanung bleiben getrennt erhalten.
+### Fehlerbehebungen
+- Die zuvor fehlende `manifest.webmanifest` ist jetzt vollständig im GitHub-Paket enthalten.
+- Der Manifest-Verweis in der `index.html` wurde von V45.7 auf V45.9 aktualisiert.
+- Der Offline-Cache wurde auf `heimspielplaner-v45.9-offline` angehoben.
+- Service Worker, Manifest, Versionsdatei und sichtbarer Versionsstand sind konsistent.
 
-## Anzeige
-- Grün: Online
-- Rot: Offline
-- Unter dem FuPa-Status steht der Zeitpunkt des letzten erfolgreichen Stands.
+### Freie Zeitfenster für Testspiele
+- Die Einstellung heißt weiterhin eindeutig „Puffer vor Spielbeginn“.
+- Der Puffer wird ausschließlich vor dem Spielbeginn berücksichtigt.
+- Nach dem offiziellen Spielende wird kein zusätzlicher Puffer addiert.
+- Beispiel: Anstoß 15:30 Uhr, 60 Minuten Puffer, offizielles Ende 16:50 Uhr. Der Platz ist von 14:30 bis 16:50 Uhr belegt und ab 16:50 Uhr wieder frei.
 
-## GitHub
-Alle Dateien dieses Pakets gemeinsam in denselben GitHub-Pages-Ordner hochladen und vorhandene Dateien ersetzen. Die App anschließend einmal vollständig online öffnen.
+### Unverändert
+- Kabinenbelegung, Verkaufsplanung, SGV-Filter, Spielplananzeige und alle übrigen Funktionen bleiben unverändert.
 
-## Offline-Test
-1. App online öffnen und warten, bis FuPa-Heimspiele geladen angezeigt werden.
-2. App zum Home-Bildschirm hinzufügen.
-3. Flugmodus aktivieren.
-4. App vollständig schließen und neu starten.
-5. Der letzte gespeicherte Stand muss mit rotem Offline-Status angezeigt werden.
+### Installation auf GitHub
+Alle Dateien aus der ZIP gemeinsam in denselben GitHub-Pages-Ordner hochladen und vorhandene Dateien ersetzen. Danach die App einmal vollständig online öffnen und neu laden.
