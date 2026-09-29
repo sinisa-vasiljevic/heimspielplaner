@@ -1,19 +1,23 @@
-## Heimspielplaner V45.9 Offline
+# Heimspielplaner V46.0 – sicherer Offline-Start
 
-### Fehlerbehebungen
-- Die zuvor fehlende `manifest.webmanifest` ist jetzt vollständig im GitHub-Paket enthalten.
-- Der Manifest-Verweis in der `index.html` wurde von V45.7 auf V45.9 aktualisiert.
-- Der Offline-Cache wurde auf `heimspielplaner-v45.9-offline` angehoben.
-- Service Worker, Manifest, Versionsdatei und sichtbarer Versionsstand sind konsistent.
+## Änderungen
+- Robuster Service Worker: Eine fehlerhafte optionale Datei verhindert nicht mehr das Speichern der gesamten App.
+- `index.html` ist Pflichtbestandteil des Offline-Caches und wird gesondert geprüft.
+- Sicherer Navigations-Fallback: Statt eines schwarzen oder weißen Bildschirms erscheint notfalls eine verständliche Offline-Meldung.
+- Lokale Dateien werden auch bei URL-Parametern zuverlässig aus dem Cache gefunden.
+- Fehlerhafte HTTP-Antworten werden nicht als gültige App-Seite gespeichert.
+- Alte Heimspielplaner-Caches werden bei Aktivierung von V46.0 entfernt.
+- FuPa wird erst nach dem sichtbaren App-Start und nur bei bestehender Onlineverbindung geladen.
+- Versionsstand, Manifest-Verweis, Cache-Name und Versionsdatei wurden auf V46.0 vereinheitlicht.
+- Vorhandene LocalStorage-Schlüssel und gespeicherte Nutzerdaten bleiben unverändert.
 
-### Freie Zeitfenster für Testspiele
-- Die Einstellung heißt weiterhin eindeutig „Puffer vor Spielbeginn“.
-- Der Puffer wird ausschließlich vor dem Spielbeginn berücksichtigt.
-- Nach dem offiziellen Spielende wird kein zusätzlicher Puffer addiert.
-- Beispiel: Anstoß 15:30 Uhr, 60 Minuten Puffer, offizielles Ende 16:50 Uhr. Der Platz ist von 14:30 bis 16:50 Uhr belegt und ab 16:50 Uhr wieder frei.
+## Installation
+1. Alle Dateien aus dieser ZIP gemeinsam in denselben GitHub-Pages-Ordner hochladen und vorhandene Dateien ersetzen.
+2. Warten, bis GitHub Pages die Änderungen veröffentlicht hat.
+3. Die bisherige Homescreen-App auf dem iPhone löschen.
+4. Die Seite einmal vollständig online in Safari öffnen und kurz geöffnet lassen.
+5. Erneut zum Home-Bildschirm hinzufügen und einmal online starten.
+6. Danach im Flugmodus schließen und erneut öffnen.
 
-### Unverändert
-- Kabinenbelegung, Verkaufsplanung, SGV-Filter, Spielplananzeige und alle übrigen Funktionen bleiben unverändert.
-
-### Installation auf GitHub
-Alle Dateien aus der ZIP gemeinsam in denselben GitHub-Pages-Ordner hochladen und vorhandene Dateien ersetzen. Danach die App einmal vollständig online öffnen und neu laden.
+## Enthaltene Dateien
+`index.html`, `manifest.webmanifest`, `sw.js`, `version.json`, drei App-Icons und `README.md`.
