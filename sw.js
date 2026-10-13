@@ -1,63 +1,74 @@
 'use strict';
-const CACHE_NAME='heimspielplaner-v49.6';
-const APP_SHELL=[
-  './index.html',
-  './manifest.webmanifest?v=49.6',
-  './version.json',
-  './icon-192.png?v=49.6',
-  './icon-512.png?v=49.6',
-  './apple-touch-icon.png?v=49.6'
-];
-self.addEventListener('install',event=>event.waitUntil((async()=>{
+const CACHE_NAME='heimspielplaner-v46.0-offline';
+const APP_SHELL=['./index.html','./manifest.webmanifest','./version.json','./icon-192.png','./icon-512.png','./apple-touch-icon.png'];
+
+self.addEventListener('install',event=>{
+  event.waitUntil((async()=>{
+    const cache=await caches.open(CACHE_NAME);
+    const results=await Promise.allSettled(APP_SHELL.map(async path=>{
+      const response=await fetch(path,{cache:'reload'});
+      if(!response.ok)throw new Error(path+' HTTP '+response.status);
+      await cache.put(path,response);
+    }));
+    const indexResult=results[0];
+    if(indexResult.status!=='fulfilled')throw indexResult.reason;
+    await self.skipWaiting();
+  })());
+});
+
+self.addEventListener('activate',event=>{
+  event.waitUntil((async()=>{
+    const keys=await caches.keys();
+    await Promise.all(keys.filter(key=>key.startsWith('heimspielplaner-')&&key!==CACHE_NAME).map(key=>caches.delete(key)));
+    await self.clients.claim();
+  })());
+});
+
+async function cachedIndex(){
   const cache=await caches.open(CACHE_NAME);
-  await cache.addAll(APP_SHELL);
-  await self.skipWaiting();
-})()));
-self.addEventListener('activate',event=>event.waitUntil((async()=>{
-  for(const key of await caches.keys()){
-    if(key.startsWith('heimspielplaner-')&&key!==CACHE_NAME) await caches.delete(key);
-  }
-  await self.clients.claim();
-})()));
+  return (await cache.match('./index.html'))||(await cache.match('index.html'));
+}
+
 self.addEventListener('fetch',event=>{
   const request=event.request;
-  if(request.method!=='GET') return;
+  if(request.method!=='GET')return;
   const url=new URL(request.url);
-  if(url.origin!==self.location.origin) return;
-  if(/\/(spiele-live\.json|version\.json)$/.test(url.pathname)){
-    event.respondWith((async()=>{
-      const cache=await caches.open(CACHE_NAME);
-      try{
-        const response=await fetch(request,{cache:'no-store'});
-        if(response.ok) await cache.put(request,response.clone());
-        return response;
-      }catch(error){
-        return (await cache.match(request,{ignoreSearch:true}))||new Response('',{status:503});
-      }
-    })());
-    return;
-  }
+
   if(request.mode==='navigate'){
     event.respondWith((async()=>{
-      const cache=await caches.open(CACHE_NAME);
       try{
-        const response=await fetch(request,{cache:'no-store'});
-        if(response.ok) await cache.put('./index.html',response.clone());
-        return response;
+        const response=await fetch(request);
+        if(response&&response.ok){
+          const cache=await caches.open(CACHE_NAME);
+          await cache.put('./index.html',response.clone());
+          return response;
+        }
+        return (await cachedIndex())||response;
       }catch(error){
-        return (await cache.match('./index.html'))||new Response('Offline',{status:503});
+        const cached=await cachedIndex();
+        if(cached)return cached;
+        return new Response('<!doctype html><html lang="de"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Heimspielplaner offline</title><body style="font-family:system-ui;padding:24px;background:#eef2f7;color:#0f172a"><h1>Heimspielplaner</h1><p>Die Offline-Dateien sind noch nicht vollständig gespeichert. Bitte die App einmal mit Internetverbindung öffnen und danach erneut versuchen.</p></body></html>',{status:503,headers:{'Content-Type':'text/html; charset=utf-8','Cache-Control':'no-store'}});
       }
     })());
     return;
   }
-  event.respondWith((async()=>{
-    const cache=await caches.open(CACHE_NAME);
-    try{
-      const response=await fetch(request,{cache:'no-cache'});
-      if(response.ok) await cache.put(request,response.clone());
-      return response;
-    }catch(error){
-      return (await cache.match(request,{ignoreSearch:true}))||new Response('',{status:503});
-    }
-  })());
+
+  if(url.origin===self.location.origin){
+    event.respondWith((async()=>{
+      const cache=await caches.open(CACHE_NAME);
+      const normalized=new Request(url.origin+url.pathname,{method:'GET'});
+      const cached=(await cache.match(request,{ignoreSearch:true}))||(await cache.match(normalized,{ignoreSearch:true}));
+      if(cached)return cached;
+      try{
+        const response=await fetch(request);
+        if(response&&response.ok)await cache.put(normalized,response.clone());
+        return response;
+      }catch(error){
+        return new Response('',{status:503,statusText:'Offline'});
+      }
+    })());
+    return;
+  }
+
+  event.respondWith(fetch(request).catch(()=>new Response('',{status:503,statusText:'Offline'})));
 });
